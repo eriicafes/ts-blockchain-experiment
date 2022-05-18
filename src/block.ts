@@ -1,25 +1,24 @@
 import { Blockchain } from "./blockchain"
 import { createHash } from "./hash"
-import { ITransaction } from "./transaction"
 
-export interface IBlock {
+export interface IBlock<T> {
     index: number
     nonce: number
     key: string
-    transations: ITransaction[]
+    transations: T[]
     previousHash: string
     hash: string
-    addTransaction(transaction: ITransaction): void
+    addTransaction(transaction: T): void
     generateHash(): string
 }
 
-export class Block implements IBlock {
+export class Block<T> implements IBlock<T> {
     public hash: string
     public nonce: number = 0
 
     constructor(
         public index: number,
-        public transations: ITransaction[],
+        public transations: T[],
         public previousHash: string,
     ) {
         this.hash = this.generateHash()
@@ -29,7 +28,7 @@ export class Block implements IBlock {
         return JSON.stringify(this.transations) + this.index + this.nonce + this.previousHash
     }
 
-    public addTransaction(transaction: ITransaction): void {
+    public addTransaction(transaction: T): void {
         this.transations.push(transaction)
     }
 

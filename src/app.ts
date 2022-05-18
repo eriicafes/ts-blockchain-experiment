@@ -1,7 +1,7 @@
 import { Blockchain } from "./blockchain";
-import { Transaction } from "./transaction";
+import { ITransaction, Transaction } from "./transaction";
 
-const blockchain = Blockchain.create()
+const blockchain = Blockchain.create<ITransaction>()
 
 const users = ["tom", "andrew", "jenner", "kate"]
 

@@ -1,32 +1,31 @@
 import { Block, IBlock } from "./block";
-import { ITransaction } from "./transaction";
 
-export interface IBlockchain {
-    blocks: IBlock[]
-    getPreviousBlock(): IBlock
-    addBlock(transactions: ITransaction[]): void
+export interface IBlockchain<T> {
+    blocks: IBlock<T>[]
+    getPreviousBlock(): IBlock<T>
+    addBlock(transactions: T[]): void
 }
 
-export class Blockchain implements IBlockchain {
+export class Blockchain<T> implements IBlockchain<T> {
     public static HashPrefix = "deb" // "0x64"
 
-    public static create(): IBlockchain {
+    public static create<T>(): IBlockchain<T> {
         const genesisBlock = new Block(0, [], "0000000000")
 
         return new Blockchain(genesisBlock)
     }
 
-    public blocks: IBlock[]
+    public blocks: IBlock<T>[]
 
-    private constructor(genesisBlock: IBlock) {
+    private constructor(genesisBlock: IBlock<T>) {
         this.blocks = [genesisBlock]
     }
 
-    public getPreviousBlock(): IBlock {
+    public getPreviousBlock(): IBlock<T> {
         return this.blocks[this.blocks.length - 1]
     }
 
-    public addBlock(transactions: ITransaction[]): void {
+    public addBlock(transactions: T[]): void {
         const previousBlock = this.getPreviousBlock()
 
         const block = new Block(previousBlock.index + 1, transactions, previousBlock.hash)
